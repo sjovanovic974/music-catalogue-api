@@ -1,0 +1,129 @@
+#%RAML 1.0
+title: music-catalogue-api
+version: v1
+mediaType: application/json
+protocols: [HTTP, HTTPS]
+description: Items in a local music shop
+
+securitySchemes:
+  basic: !include security-schemes/basic-auth.raml
+    
+types:
+  Product: !include data-types/product.raml
+
+traits:
+  paginated: !include traits/pageable.raml
+  sorted: !include traits/sortable.raml
+
+/products:
+  get:
+    is: [ paginated, sorted ]
+    displayName: Retrieves music products from DB
+    description: A collection of music products
+    queryParameters:
+      category: 
+        displayName: Product category
+        description: Returns products from a specific category - 1 CD, 2 Vinyl, 3 DVD, 4 Books 
+        type: integer
+        minimum: 1
+        maximum: 4
+        required: false
+        example: 4 
+      artist:
+        displayName: Artist
+        description: Filter products by artist name
+        type: string
+        minLength: 1
+        required: false
+        example: M
+      title:
+        displayName: Title
+        description: Search for titles by provided paramater
+        type: string
+        minLength: 3
+        required: false
+        example: Mas
+    responses:
+      200:
+        body:
+          application/json:
+            type: Product[]
+            examples: 
+              output: !include examples/productsArray.raml
+      400:
+        body:
+          application/json:
+            example:
+              message: Bad Request
+  post:
+    securedBy: [basic]
+    displayName: Creates a product
+    description: Creates and saves a product in DB
+    body:
+      application/json:
+        type: Product
+        examples:
+          input: !include examples/productNew.raml
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              message: Product created
+      400:
+        body:
+          application/json:
+            example:
+              message: Bad Request
+  /{id}:
+    uriParameters:
+      id:
+        type: integer
+        minimum: 1
+    get:
+      description: Retrieves a specific product by provided id
+      responses:
+        200:
+          body:
+            application/json:
+                examples:
+                  output: !include examples/product.raml
+        404:
+          body:
+            application/json:
+              example:
+                message: Product not found!
+    put:
+      securedBy: [basic]
+      description: Updates specific product
+      body:
+        application/json:
+          type: Product
+          examples:
+            input: !include examples/product.raml
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                message: Product updated.
+        400:
+          body:
+            application/json:
+              example:
+                message: Bad Request!
+    delete:
+      securedBy: [basic]
+      description: Deletes specific product
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                message: Product deleted.
+        400:
+          body:
+            application/json:
+              example:
+                message: Bad Request!
+          

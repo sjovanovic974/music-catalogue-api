@@ -1,0 +1,15 @@
+#%RAML 1.0 Trait
+
+queryParameters:
+  orderBy:
+    description: |
+      Order by one of the following fields - id, name, unit_price 
+    type: string
+    enum: [id, name, unit_price]
+    default: id
+    required: true
+  order:
+    description: Order
+    enum: [desc, asc]
+    default: asc
+    required: true

@@ -1,0 +1,33 @@
+#%RAML 1.0 DataType
+
+type: object
+properties:
+  id?: integer
+  sku?: string
+  name:
+    type: string
+    required: true
+    minLength: 2
+    maxLength: 50
+  description?:
+    type: string
+    maxLength: 300
+  unit_price:
+    type: number
+    required: true
+    minimum: 1
+  image_url:
+    type: string
+    default: https://cdn-icons-png.flaticon.com/512/32/32328.png
+  active:
+    type: boolean
+    default: true
+  units_in_stock:
+    type: integer
+    required: true
+    minimum: 0
+  date_created?: datetime
+  last_updated?: datetime
+  category:
+    type: !include productCategory.raml
+

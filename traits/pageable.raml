@@ -1,0 +1,16 @@
+#%RAML 1.0 Trait
+
+queryParameters:
+  page:
+    default: 1
+    type: integer
+    minimum: 1
+  size:
+    default: 10
+    type: integer
+    minimum: 5
+    maximum: 20
+responses:
+  200:
+    headers:
+      x-total-pages: 
