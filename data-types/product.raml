@@ -10,10 +10,7 @@ properties:
     minLength: 2
     maxLength: 50
   artist:
-    type: string
-    required: true
-    minLength: 2
-    maxLength: 50
+    type: !include artist.raml
   description?:
     type: string
     maxLength: 300
